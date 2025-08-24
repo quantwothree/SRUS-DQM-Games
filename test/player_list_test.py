@@ -1,7 +1,7 @@
 import unittest
 from app.player import Player
 from app.player_node import PlayerNode
-from app.player_list import PlayerList
+from app.player_list import PlayerList, EmptyListException
 
 class TestPlayerList(unittest.TestCase):
     def test_insert_head_empty_list(self):
@@ -88,6 +88,82 @@ class TestPlayerList(unittest.TestCase):
         #nothing should be in front of head and nothing should behind tail
         self.assertIsNone(sut.head.previous)
         self.assertIsNone(sut.tail.next)
+
+    def test_delete_at_head(self):
+        #for when list is empty
+        sut = PlayerList()
+        self.assertTrue(sut.is_empty())
+
+        with self.assertRaises(EmptyListException) as error:
+            sut.delete_at_head()
+        self.assertEqual(type(error.exception), EmptyListException)
+        # check if the message is exactly the same
+        self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
+
+        #now add 1 node to the empty list
+        player1 = Player("08", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        self.assertFalse(sut.is_empty())
+        sut.delete_at_head()
+
+        self.assertTrue(sut.is_empty())
+        self.assertIsNone((sut.head), None)
+        self.assertIsNone((sut.tail), None)
+
+        #add 2 nodes to the list
+        player1 = Player("08", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        player2 = Player("09", "KimWexler")
+        node2 = PlayerNode(player2)
+        sut.insert_head(node2)
+
+        self.assertFalse(sut.is_empty())
+        sut.delete_at_head()
+        self.assertEqual(sut.head.player.uid, "08")
+        self.assertIsNone(sut.head.previous, None)
+
+    def test_delete_at_tail(self):
+        # for when list is empty
+        sut = PlayerList()
+        self.assertTrue(sut.is_empty())
+
+        with self.assertRaises(EmptyListException) as error:
+            sut.delete_at_tail()
+        self.assertEqual(type(error.exception), EmptyListException)
+        # check if the message is exactly the same
+        self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
+
+        # now add 1 node to the empty list
+        player1 = Player("08", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        self.assertFalse(sut.is_empty())
+        sut.delete_at_tail()
+
+        self.assertTrue(sut.is_empty())
+        self.assertIsNone((sut.head), None)
+        self.assertIsNone((sut.tail), None)
+
+        # add 2 nodes to the list
+        player1 = Player("08", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        player2 = Player("09", "KimWexler")
+        node2 = PlayerNode(player2)
+        sut.insert_head(node2)
+
+        self.assertFalse(sut.is_empty())
+        sut.delete_at_tail()
+
+        self.assertEqual(sut.tail.player.uid, "09")
+        self.assertIsNone(sut.tail.next, None)
+
 
 
 if __name__ == "__main__":

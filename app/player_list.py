@@ -1,3 +1,6 @@
+class EmptyListException(Exception):
+    pass
+
 class PlayerList:
     def __init__(self):
         self._head = None
@@ -27,12 +30,40 @@ class PlayerList:
             player_node.previous = self._tail
             self._tail = player_node
 
+    def delete_at_head(self):
+        if self.is_empty():
+            raise EmptyListException("Can not delete from an empty list")
+        elif self._head == self._tail: #for when list only has 1 node
+            self._head = None
+            self._tail = None
+        else:
+            self._head = self._head.next #Or can use self.head = self.head.next but needs to define a @head.setter
+            self._head.previous = None #Or can use self.head.previous = None if already define a @head.setter
+
+    #Use setters for head and tail in this case:
+    def delete_at_tail(self):
+        if self.is_empty():
+            raise EmptyListException("Can not delete from an empty list")
+        elif self.head == self.tail:
+            self.head = None
+            self.tail = None
+        else:
+            self.tail = self.tail.previous
+            self.tail.next = None
+
     @property
     def head(self): #for accessing the private head
         return self._head
+
+    @head.setter # setter function to allow assigning _head to something
+    def head(self, player_node):
+        self._head = player_node
 
     @property
     def tail(self): #for accessing the private tail
         return self._tail
 
+    @tail.setter
+    def tail(self,player_node):
+        self._tail = player_node
 
