@@ -1,7 +1,7 @@
 import unittest
 from app.player import Player
 from app.player_node import PlayerNode
-from app.player_list import PlayerList, EmptyListException
+from app.player_list import PlayerList, EmptyListException, KeyNotFoundException
 
 class TestPlayerList(unittest.TestCase):
     def test_insert_head_empty_list(self):
@@ -164,7 +164,56 @@ class TestPlayerList(unittest.TestCase):
         self.assertEqual(sut.tail.player.uid, "09")
         self.assertIsNone(sut.tail.next, None)
 
+    def test_delete_at_key(self):
+        # for when list is empty
+        sut = PlayerList()
+        self.assertTrue(sut.is_empty())
 
+        with self.assertRaises(EmptyListException) as error:
+            sut.delete_at_key("03")
+        self.assertEqual(type(error.exception), EmptyListException)
+        self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
+
+        # Add 1 node and check with valid / unvalid key
+        player1 = Player("01", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        with self.assertRaises(KeyNotFoundException) as error:
+            sut.delete_at_key("03")
+        self.assertEqual(type(error.exception), KeyNotFoundException)
+        self.assertEqual(error.exception.args[0], "Can not find key in list")
+
+        sut.delete_at_key("01")
+        self.assertTrue(sut.is_empty())
+
+        # Add 4 nodes
+        player1 = Player("01", "SaulGoodman")
+        node1 = PlayerNode(player1)
+        sut.insert_head(node1)
+
+        player2 = Player("02", "KimWexler")
+        node2 = PlayerNode(player2)
+        sut.insert_head(node2)
+
+        player3 = Player("03", "Chuck McGill")
+        node3 = PlayerNode(player3)
+        sut.insert_head(node3)
+
+        player4 = Player("04", "Lalo Salamanca")
+        node4 = PlayerNode(player4)
+        sut.insert_head(node4)
+
+        # The list is now 4,3,2,1
+        with self.assertRaises(KeyNotFoundException) as error:
+            sut.delete_at_key("05")
+        self.assertEqual(type(error.exception), KeyNotFoundException)
+        self.assertEqual(error.exception.args[0], "Can not find key in list")
+
+        sut.delete_at_key("03")
+        self.assertEqual(sut.tail.previous.player.uid, "02")
+        sut.delete_at_key("02")
+        self.assertEqual(sut.head.next.player.uid, "01")
 
 if __name__ == "__main__":
     unittest.main()

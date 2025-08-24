@@ -1,6 +1,9 @@
 class EmptyListException(Exception):
     pass
 
+class KeyNotFoundException(Exception):
+    pass
+
 class PlayerList:
     def __init__(self):
         self._head = None
@@ -50,6 +53,43 @@ class PlayerList:
         else:
             self.tail = self.tail.previous
             self.tail.next = None
+
+    def delete_at_key(self, key_to_delete):
+        if self.is_empty():
+            raise EmptyListException("Can not delete from an empty list")
+        elif self.head == self.tail: #list has 1 node
+            if self.head.key != key_to_delete: #if key is invalid (not in list)
+                raise KeyNotFoundException("Can not find key in list")
+            else: # the 1 node in list is the node to be deleted
+                self.delete_at_head()
+                return
+        else: # if list has more than 1 node, loop through to find the node to delete
+            if self.head.key == key_to_delete:
+                self.delete_at_head()
+                return
+            if self.tail.key == key_to_delete:
+                self.delete_at_tail()
+                return
+            else:
+                current_node = self.head.next
+                while current_node:
+                    if current_node.key == key_to_delete:
+                        current_node.previous.next = current_node.next
+                        current_node.next.previous = current_node.previous
+                        return
+                    else:
+                        current_node = current_node.next
+                raise KeyNotFoundException("Can not find key in list")
+
+
+
+
+
+
+
+
+
+
 
     @property
     def head(self): #for accessing the private head
