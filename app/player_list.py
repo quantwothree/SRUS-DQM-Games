@@ -1,3 +1,6 @@
+from player import Player
+from player_node import PlayerNode
+
 class EmptyListException(Exception):
     pass
 
@@ -81,15 +84,15 @@ class PlayerList:
                         current_node = current_node.next
                 raise KeyNotFoundException("Can not find key in list")
 
-
-
-
-
-
-
-
-
-
+    def display(self, forward = True):
+        if forward:
+            while self.head:
+                print(self.head.player) # calls __str__ defined in Player class
+                self.head = self.head.next
+        if not forward:
+            while self.tail:
+                print(self.tail.player)
+                self.tail = self.tail.previous
 
     @property
     def head(self): #for accessing the private head
@@ -107,3 +110,16 @@ class PlayerList:
     def tail(self,player_node):
         self._tail = player_node
 
+sut = PlayerList()
+player1 = Player("01", "SaulGoodman")
+node1 = PlayerNode(player1)
+sut.insert_head(node1)
+
+player2 = Player("02", "KimWexler")
+node2 = PlayerNode(player2)
+sut.insert_head(node2)
+
+print("Forward")
+sut.display(True)
+print("Backward")
+sut.display(False)
