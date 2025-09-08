@@ -94,6 +94,30 @@ class PlayerList:
                 print(self.tail.player)
                 self.tail = self.tail.previous
 
+    def find(self, key_to_find):
+        if self.is_empty():
+            return None
+        current_node = self._head
+        while current_node:
+            if current_node.key == key_to_find:
+                return current_node.player
+            current_node = current_node.next
+        return None
+
+    def __len__(self):
+        current_node = self._head
+        counter = 0
+        while current_node:
+            counter += 1
+            current_node = current_node.next
+        return counter
+
+    def __iter__(self):
+        current_node = self._head
+        while current_node:
+            yield current_node.player #yeild acts like return but pauses and resumes instead of exiting
+            current_node = current_node.next
+
     @property
     def head(self): #for accessing the private head
         return self._head
@@ -110,16 +134,16 @@ class PlayerList:
     def tail(self,player_node):
         self._tail = player_node
 
-sut = PlayerList()
-player1 = Player("01", "SaulGoodman")
-node1 = PlayerNode(player1)
-sut.insert_head(node1)
-
-player2 = Player("02", "KimWexler")
-node2 = PlayerNode(player2)
-sut.insert_head(node2)
-
-print("Forward")
-sut.display(True)
-print("Backward")
-sut.display(False)
+# sut = PlayerList()
+# player1 = Player("01", "SaulGoodman")
+# node1 = PlayerNode(player1)
+# sut.insert_head(node1)
+#
+# player2 = Player("02", "KimWexler")
+# node2 = PlayerNode(player2)
+# sut.insert_head(node2)
+#
+# print("Forward")
+# sut.display(True)
+# print("Backward")
+# sut.display(False)
