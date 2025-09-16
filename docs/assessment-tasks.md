@@ -237,7 +237,20 @@ Add a separate test case to `test_player.py` to test your custom sorting algorit
 Include your code below:
 
 ```python
-# YOUR CUSTOM Sorting here
+ @classmethod
+    def custom_sort(cls, array: list) -> list:
+        if len(array) <= 1:
+            return array
+        pivot = array[0]
+        left = []
+        right = []
+        for player in array[1:]:
+            if player > pivot:
+                right.append(player)
+            else:
+                left.append(player)
+        return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+
 ```
 
 #### 5.2.3. Success criteria

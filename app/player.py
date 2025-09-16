@@ -60,3 +60,24 @@ class Player:
             return True
         else:
             return False
+
+    def __gt__(self, other):
+        if self._score > other._score:
+            return True
+        else:
+            return False
+
+    @classmethod
+    def custom_sort(cls, array: list) -> list:
+        if len(array) <= 1:
+            return array
+        pivot = array[0]
+        left = []
+        right = []
+        for player in array[1:]:
+            if player > pivot:
+                right.append(player)
+            else:
+                left.append(player)
+        return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+
