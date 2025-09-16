@@ -47,7 +47,7 @@ class Player:
         return self.pearson_hash(self.uid)
 
     def __repr__(self):
-        print(f"{self.__class__.__name__} (Name= '{self._player_name}', uid= '{self._id}', score= {self._score})")
+        return f"{self.__class__.__name__} (Name= '{self._player_name}', uid= '{self._id}', score= {self._score})"
 
     def __lt__(self, other):
         if self._score < other._score:
@@ -55,4 +55,8 @@ class Player:
         else:
             return False
 
-
+    def __eq__(self, other):
+        if self._score == other._score:
+            return True
+        else:
+            return False
