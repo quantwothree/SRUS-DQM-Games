@@ -97,7 +97,12 @@ def test_sort_players(self):
 What was the outcome of running the above unit test, copy paste the output **for just this particular test** below:
 
 ```text
-Copy the traceback you got when you ran the test here.
+Error
+Traceback (most recent call last):
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/test/player_test.py", line 18, in test_sort_players
+    sorted_players = sorted(players)
+TypeError: '<' not supported between instances of 'Player' and 'Player'
+
 ```
 
 ### 4.3. Success criteria
@@ -115,7 +120,7 @@ What is the **only** magic method that must be implemented in the player class f
 **Hint:** if you don't recall this from class, the error message you got when you ran the test will help you.
 -------
 > Answer Here
-> Yes, here - instead of this text!
+> The method is __lt__
 -------
 #### 4.3.2. Task: Implement the magic method in the Player class
 
@@ -136,7 +141,12 @@ def test_players_can_be_compared_by_score(self):
 Run the test and confirm that your error resembles the previous error
 
 ```text
-INSERT ERROR OUTPUT HERE
+Error
+Traceback (most recent call last):
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/test/player_test.py", line 31, in test_players_can_be_compared_by_score
+    self.assertLess(alice, bob)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+TypeError: '<' not supported between instances of 'Player' and 'Player'
 ```
 
 - Implement the appropriate magic method in the Player class and ensure you pass this test
