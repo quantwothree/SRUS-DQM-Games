@@ -56,7 +56,7 @@ class Player:
             return False
 
     def __eq__(self, other):
-        if self._score == other._score:
+        if self._score == other._score and self._id == other._id and self._player_name == other._player_name:
             return True
         else:
             return False

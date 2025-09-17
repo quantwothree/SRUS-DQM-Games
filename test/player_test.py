@@ -39,19 +39,16 @@ class TestPlayer(unittest.TestCase):
         self.assertListEqual(players_manually_sorted,players_sorted)
 
     def test_custom_sort_on_sorted_list(self):
-        players1 = [Player(f"{i:03}", f"Player {i}", random.randint(0, 1000)) for i in range(1000)]
-        players2 = sorted(players1, reverse=True)
+        players_unsorted = [Player(f"{i:03}", f"Player {i}", random.randint(0, 1000)) for i in range(1000)]
+        players_sorted = sorted(players_unsorted, reverse=True)
 
-        #sorting a unsorted list
-        players_sorted = Player.custom_sort(players1)
+        #sorting an unsorted list
+        players_custom_sorted_from_unsorted = Player.custom_sort(players_unsorted)
 
         #sorting a sorted list
-        players_custom_sorted= Player.custom_sort(players_sorted)
+        players_custom_sorted_from_sorted = Player.custom_sort(players_sorted)
 
-        self.assertListEqual(players_custom_sorted, players_sorted)
-
-
-
+        self.assertListEqual(players_custom_sorted_from_unsorted,players_custom_sorted_from_sorted)
 
 
 if __name__ == "__main__":

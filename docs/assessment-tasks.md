@@ -303,7 +303,26 @@ Create a test case that tries to sort 1000 players that are already sorted.
 If you get a failure, include the failure below:
 
 ```text
-YOUR FAILURE HERE
+FAILED (errors=1)
+
+Error
+Traceback (most recent call last):
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/test/player_test.py", line 49, in test_custom_sort_on_sorted_list
+    players_custom_sorted_from_sorted = Player.custom_sort(players_sorted)
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/app/player.py", line 82, in custom_sort
+    return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+                                              ~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/app/player.py", line 82, in custom_sort
+    return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+                                              ~~~~~~~~~~~~~~~^^^^^^
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/app/player.py", line 82, in custom_sort
+    return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+                                              ~~~~~~~~~~~~~~~^^^^^^
+  [Previous line repeated 981 more times]
+  File "/Users/quanmai/Desktop/TAFE/Python/SRUS-DQM-Games/app/player.py", line 78, in custom_sort
+    if player > pivot:
+       ^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded
 ```
 
 ##### 5.3.4.1 Question: Why does the algorithm fail on presorted values?
@@ -312,14 +331,38 @@ Provide a reason why this test failed (if you got a recursion errors, you need t
 
 If your implementation did not fail, you must nevertheless explain why the senior developers algorithm has worse space complexity for presorted values.
 
-> Answer here
-
+> The reason why this algorithm fails on sorted list but not unsorted list is because with the pivot at the first index, 
+> every other numbers will be put on 1 side of the pivot:
+> 
+> if the sorted list is ascending, then all numbers go into the right[] list, the left[] is empty 
+> if the sorted list is descending, then all numbers go into the left[] list, the right [] is empty
+> 
+> so for every recursion, the algorithm would only sort 1 number, it needs to repeat X times for X number of numbers in the list 
+> however, if the list is unsorted, then we will have a somewhat 'balanced' number of numbers on both right[] and left[] list, 
+> each of these list will again repeat the algorithm, splitting themselves into smaller and smaller lists for every recursion,
+> effectively speeding up the process 
+> 
+> Python by default allows 1000 recursion, the algorithm needs 1000 recursions to sort 1000 sorter Players, therefore its limit was reached 
+> and Python gave us a RecursionError
+> 
 Propose a fix to your sorting algorithm that fixes this issue.
 
 ```python
-# YOUR FIX HERE
-# Highlight what the fix was
+    def custom_sort(cls, array: list) -> list:
+        if len(array) <= 1:
+            return array
+        pivot = array[round(len(array)/2)]
+        left = []
+        right = []
+        for player in array[1:]:
+            if player > pivot:
+                right.append(player)
+            else:
+                left.append(player)
+        return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
 ```
+> By choosing the pivot as the middle index of the list, we devide the list into 'more or less' half, whether the two halves are evenly distributed or not 
+> depends on how 'sorted' the list already is. But nonetheless, a middle pivot still performs well with a sorted list. 
 
 #### 5.3.5. Success criteria
 
@@ -340,7 +383,7 @@ I, <name and student number>, completed this work in class <room number>, on <da
 Or (if not completed in class):
 
 ```text
-I, <name and student number>, completed this work outside of the scheduled hours. I emailed <assessors name>, on <date>, along with my documented reason for non-attendance, and have scheduled a time to meet to discuss my work.
+I, Dinh Quan Mai (20136769) , completed this work outside of the scheduled hours. I emailed <assessors name>, on <date>, along with my documented reason for non-attendance, and have scheduled a time to meet to discuss my work.
 
 I understand that until I meet my assessor to confirm that this work is a valid and true representation of my abilities to write and debug a sorting algorithm in Python, this submission cannot be considered complete.
 
