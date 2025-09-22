@@ -44,7 +44,6 @@ class TestPlayer(unittest.TestCase):
 
         #sorting an unsorted list
         players_custom_sorted_from_unsorted = Player.custom_sort(players_unsorted)
-
         #sorting a sorted list
         players_custom_sorted_from_sorted = Player.custom_sort(players_sorted)
 

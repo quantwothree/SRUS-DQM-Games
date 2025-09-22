@@ -56,7 +56,7 @@ class Player:
             return False
 
     def __eq__(self, other):
-        if self._score == other._score and self._id == other._id and self._player_name == other._player_name:
+        if self._score == other._score:
             return True
         else:
             return False
@@ -71,13 +71,15 @@ class Player:
     def custom_sort(cls, array: list) -> list:
         if len(array) <= 1:
             return array
-        pivot = array[0]
+        pivot_index = round(len(array)/2)
+        pivot = array[pivot_index]
+        array_with_no_pivot = array[:pivot_index] + array[pivot_index+1:]  #remove the pivot from the list
         left = []
         right = []
-        for player in array[1:]:
+        for player in array_with_no_pivot:
             if player > pivot:
-                right.append(player)
-            else:
                 left.append(player)
-        return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+            else:
+                right.append(player)
+        return cls.custom_sort(left) + [pivot] + cls.custom_sort(right)
 

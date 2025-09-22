@@ -119,8 +119,7 @@ What is the **only** magic method that must be implemented in the player class f
 
 **Hint:** if you don't recall this from class, the error message you got when you ran the test will help you.
 -------
-> Answer Here
-> The method is __lt__
+> The method is __lt__ (dunder lt) 
 -------
 #### 4.3.2. Task: Implement the magic method in the Player class
 
@@ -179,7 +178,6 @@ AssertionError: Lists differ: [Play[69 chars]1', score= 10), Player (Name= 'Char
 ##### 4.3.4.1 Question: why did the equality comparison fail?
 Why did the test fail (note: if it doesn't fail, it means there is something you have already done before you were asked to do so - if that's the case, you need to figure out what that is!)?
 -------
-> Answer here
 > The test fails because it's a assertListEqual, so Python does not know how to compare if 2 Player objects are equal or not, at this moment Python could only compare if 1 is less than the other.
 -------
 Add the necessary code to the Player class to ensure that the `test_sort_players` test passes.
@@ -222,7 +220,11 @@ def sort_quickly(arr):
 
 What is the expected time and space complexity of the above algorithm? You can answer using big O or in plain English but in both cases you MUST justify your answer.
 
-> Answer here
+> With the algorithm above, for first recursion, the sort runs n-1 times, and because for each recursion the sort only eliminates 1 number, after each recursion the total amount of n reduces by 1. 
+> So in the second recursion , the code needs to run n-2 times, the thirs recursion n-3 times and so on. 
+> Therefore at the end of the sort, we would have (n-1) + (n-2) + (n-3) + ... + 1 
+> Since we ignore small numbers in big O we then have n + n + n + n + ... for n times which is equal to n^n = n^2 (n to the power of 2)
+> So the big O for this algorithm would be O(n to the power of 2)
 
 ### 5.2. Task: Implement the custom sorting algorithm
 
@@ -281,7 +283,11 @@ Include your test case below:
 
 ```python
 
-# YOUR TEST CASE HERE
+    def test_custom_sort_at_large_scale(self):
+        players = [Player(f"{i:03}", f"Player {i}",random.randint(0, 1000)) for i in range(1000)]
+        players_manually_sorted = sorted(players, reverse=True)
+        players_sorted = Player.custom_sort(players)
+        self.assertListEqual(players_manually_sorted,players_sorted)
 
 ```
 
@@ -348,21 +354,24 @@ If your implementation did not fail, you must nevertheless explain why the senio
 Propose a fix to your sorting algorithm that fixes this issue.
 
 ```python
-    def custom_sort(cls, array: list) -> list:
+       def custom_sort(cls, array: list) -> list:
         if len(array) <= 1:
             return array
-        pivot = array[round(len(array)/2)]
+        pivot_index = round(len(array)/2)
+        pivot = array[pivot_index]
+        array_with_no_pivot = array[:pivot_index] + array[pivot_index+1:]  #remove the pivot from the list
         left = []
         right = []
-        for player in array[1:]:
+        for player in array_with_no_pivot:
             if player > pivot:
-                right.append(player)
-            else:
                 left.append(player)
-        return cls.custom_sort(right) + [pivot] + cls.custom_sort(left)
+            else:
+                right.append(player)
+        return cls.custom_sort(left) + [pivot] + cls.custom_sort(right)
+
 ```
 > By choosing the pivot as the middle index of the list, we devide the list into 'more or less' half, whether the two halves are evenly distributed or not 
-> depends on how 'sorted' the list already is. But nonetheless, a middle pivot still performs well with a sorted list. 
+> depends on how 'sorted' the list already is. But nonetheless, a 'middle' pivot still performs well with a sorted list. 
 
 #### 5.3.5. Success criteria
 
@@ -383,7 +392,7 @@ I, <name and student number>, completed this work in class <room number>, on <da
 Or (if not completed in class):
 
 ```text
-I, Dinh Quan Mai (20136769) , completed this work outside of the scheduled hours. I emailed <assessors name>, on <date>, along with my documented reason for non-attendance, and have scheduled a time to meet to discuss my work.
+I, Dinh Quan Mai (20136769) , completed this work outside of the scheduled hours. I emailed Rafael, on 22nd September 2025, along with my documented reason for non-attendance, and have scheduled a time to meet to discuss my work.
 
 I understand that until I meet my assessor to confirm that this work is a valid and true representation of my abilities to write and debug a sorting algorithm in Python, this submission cannot be considered complete.
 
