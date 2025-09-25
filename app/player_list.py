@@ -1,12 +1,6 @@
 from player import Player
 from player_node import PlayerNode
 
-class EmptyListException(Exception):
-    pass
-
-class KeyNotFoundException(Exception):
-    pass
-
 class PlayerList:
     def __init__(self):
         self._head = None
@@ -38,7 +32,7 @@ class PlayerList:
 
     def delete_at_head(self):
         if self.is_empty():
-            raise EmptyListException("Can not delete from an empty list")
+            raise IndexError("Can not delete from an empty list")
         elif self._head == self._tail: #for when list only has 1 node
             self._head = None
             self._tail = None
@@ -49,7 +43,7 @@ class PlayerList:
     #Use setters for head and tail in this case:
     def delete_at_tail(self):
         if self.is_empty():
-            raise EmptyListException("Can not delete from an empty list")
+            raise IndexError("Can not delete from an empty list")
         elif self.head == self.tail:
             self.head = None
             self.tail = None
@@ -59,10 +53,10 @@ class PlayerList:
 
     def delete_at_key(self, key_to_delete):
         if self.is_empty():
-            raise EmptyListException("Can not delete from an empty list")
+            raise IndexError("Can not delete from an empty list")
         elif self.head == self.tail: #list has 1 node
             if self.head.key != key_to_delete: #if key is invalid (not in list)
-                raise KeyNotFoundException("Can not find key in list")
+                raise KeyError("Can not find key in list")
             else: # the 1 node in list is the node to be deleted
                 self.delete_at_head()
                 return
@@ -82,7 +76,7 @@ class PlayerList:
                         return
                     else:
                         current_node = current_node.next
-                raise KeyNotFoundException("Can not find key in list")
+                raise KeyError("Can not find key in list")
 
     def display(self, forward = True):
         if forward:
@@ -134,16 +128,4 @@ class PlayerList:
     def tail(self,player_node):
         self._tail = player_node
 
-# sut = PlayerList()
-# player1 = Player("01", "SaulGoodman")
-# node1 = PlayerNode(player1)
-# sut.insert_head(node1)
-#
-# player2 = Player("02", "KimWexler")
-# node2 = PlayerNode(player2)
-# sut.insert_head(node2)
-#
-# print("Forward")
-# sut.display(True)
-# print("Backward")
-# sut.display(False)
+

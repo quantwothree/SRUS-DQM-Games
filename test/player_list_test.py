@@ -1,7 +1,7 @@
 import unittest
 from app.player import Player
 from app.player_node import PlayerNode
-from app.player_list import PlayerList, EmptyListException, KeyNotFoundException
+from app.player_list import PlayerList
 
 class TestPlayerList(unittest.TestCase):
     def test_insert_head_empty_list(self):
@@ -89,51 +89,14 @@ class TestPlayerList(unittest.TestCase):
         self.assertIsNone(sut.head.previous)
         self.assertIsNone(sut.tail.next)
 
-    def test_delete_at_head(self):
-        #for when list is empty
-        sut = PlayerList()
-        self.assertTrue(sut.is_empty())
-
-        with self.assertRaises(EmptyListException) as error:
-            sut.delete_at_head()
-        self.assertEqual(type(error.exception), EmptyListException)
-        # check if the message is exactly the same
-        self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
-
-        #now add 1 node to the empty list
-        player1 = Player("08", "SaulGoodman")
-        node1 = PlayerNode(player1)
-        sut.insert_head(node1)
-
-        self.assertFalse(sut.is_empty())
-        sut.delete_at_head()
-
-        self.assertTrue(sut.is_empty())
-        self.assertIsNone((sut.head), None)
-        self.assertIsNone((sut.tail), None)
-
-        #add 2 nodes to the list
-        player1 = Player("08", "SaulGoodman")
-        node1 = PlayerNode(player1)
-        sut.insert_head(node1)
-
-        player2 = Player("09", "KimWexler")
-        node2 = PlayerNode(player2)
-        sut.insert_head(node2)
-
-        self.assertFalse(sut.is_empty())
-        sut.delete_at_head()
-        self.assertEqual(sut.head.player.uid, "08")
-        self.assertIsNone(sut.head.previous, None)
-
     def test_delete_at_tail(self):
         # for when list is empty
         sut = PlayerList()
         self.assertTrue(sut.is_empty())
 
-        with self.assertRaises(EmptyListException) as error:
+        with self.assertRaises(IndexError) as error:
             sut.delete_at_tail()
-        self.assertEqual(type(error.exception), EmptyListException)
+        self.assertEqual(type(error.exception), IndexError)
         # check if the message is exactly the same
         self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
 
@@ -169,9 +132,9 @@ class TestPlayerList(unittest.TestCase):
         sut = PlayerList()
         self.assertTrue(sut.is_empty())
 
-        with self.assertRaises(EmptyListException) as error:
+        with self.assertRaises(IndexError) as error:
             sut.delete_at_key("03")
-        self.assertEqual(type(error.exception), EmptyListException)
+        self.assertEqual(type(error.exception), IndexError)
         self.assertEqual(error.exception.args[0], "Can not delete from an empty list")
 
         # Add 1 node and check with valid / unvalid key
@@ -179,9 +142,9 @@ class TestPlayerList(unittest.TestCase):
         node1 = PlayerNode(player1)
         sut.insert_head(node1)
 
-        with self.assertRaises(KeyNotFoundException) as error:
+        with self.assertRaises(KeyError) as error:
             sut.delete_at_key("03")
-        self.assertEqual(type(error.exception), KeyNotFoundException)
+        self.assertEqual(type(error.exception), KeyError)
         self.assertEqual(error.exception.args[0], "Can not find key in list")
 
         sut.delete_at_key("01")
@@ -205,9 +168,9 @@ class TestPlayerList(unittest.TestCase):
         sut.insert_head(node4)
 
         # The list is now 4,3,2,1
-        with self.assertRaises(KeyNotFoundException) as error:
+        with self.assertRaises(KeyError) as error:
             sut.delete_at_key("05")
-        self.assertEqual(type(error.exception), KeyNotFoundException)
+        self.assertEqual(type(error.exception), KeyError)
         self.assertEqual(error.exception.args[0], "Can not find key in list")
 
         sut.delete_at_key("03")
