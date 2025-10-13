@@ -19,6 +19,10 @@ class PlayerBNode:
     def right_bnode(self) -> PlayerBNode:
         return self._right_bnode
 
+    @player.setter
+    def player(self, player: Player) -> None:
+        self._player = player
+
     @left_bnode.setter
     def left_bnode(self, bnode: PlayerBNode) -> None:
         self._left_bnode = bnode
