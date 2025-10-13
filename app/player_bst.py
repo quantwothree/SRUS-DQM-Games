@@ -24,3 +24,14 @@ class PlayerBST:
                 self._root.player = player
             return self._root
 
+    def search(self, name: str) -> Player | None:
+        if self._root is None:
+            return None
+        elif self._root.player.name == name:
+            return self._root.player
+        else:
+            if name < self._root.player.name:
+                return PlayerBST(self._root.left_bnode).search(name)
+            elif name > self._root.player.name:
+                return PlayerBST(self._root.right_bnode).search(name)
+
