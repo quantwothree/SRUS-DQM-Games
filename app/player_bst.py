@@ -35,3 +35,25 @@ class PlayerBST:
             elif name > self._root.player.name:
                 return PlayerBST(self._root.right_bnode).search(name)
 
+    def sorted_list(self) -> list:
+        if self._root is None:
+            return []
+        else:
+            return PlayerBST(self._root.left_bnode).sorted_list() + [self._root.player] + PlayerBST(self._root.right_bnode).sorted_list()
+
+
+    def build_subtree(self, players: list) -> PlayerBNode | None:
+        # Get middle element for subtree
+        middle = len(players) // 2
+        node = PlayerBNode(players[middle])
+
+        #Build left and right children
+        node.left_bnode = self.build_subtree(players[:middle])
+        node.right_bnode = self.build_subtree(players[middle + 1:])
+
+        return node
+
+    def balance(self) -> None:
+        players = self.sorted_list()
+        self._root = self.build_subtree(players)
+
